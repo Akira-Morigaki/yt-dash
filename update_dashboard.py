@@ -151,8 +151,13 @@ def main():
         except Exception:
             pass
 
-    # Append current reading to history (max 30 points)
-    history.append({"t": now.isoformat(), "n": sub_count})
+    # Down-sample history to one point per JST date (latest reading wins),
+    # keep last 30 days. This avoids the recent end going flat from 10-min polling.
+    today_str = now.date().isoformat()
+    if history and history[-1].get("t", "").startswith(today_str):
+        history[-1] = {"t": now.isoformat(), "n": sub_count}
+    else:
+        history.append({"t": now.isoformat(), "n": sub_count})
     history = history[-30:]
 
     data = {

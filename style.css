@@ -344,3 +344,55 @@ html, body {
 }
 
 .live-version { color: var(--text-dim); }
+
+/* ─── Responsive: portrait / tablet (iPad等) ───────── */
+@media (orientation: portrait), (max-aspect-ratio: 4/3) {
+  .layout {
+    flex-direction: column;
+    height: 100dvh;
+    padding: 0 0 5vw;
+  }
+
+  .letterbox { display: none; }
+
+  .col-left {
+    width: 100%;
+    flex: 0 0 44%;
+    padding: 4vw 6vw 2vw;
+    text-align: center;
+    border-bottom: 1px solid rgba(255,255,255,0.04);
+  }
+
+  .col-sep { display: none; }
+
+  .col-right {
+    flex: 1;
+    padding: 3vw 5vw;
+  }
+
+  .red-line {
+    left: 6vw;
+    right: 6vw;
+    background: linear-gradient(90deg, transparent, var(--red) 50%, transparent 100%);
+  }
+
+  .channel-name  { font-size: 2.5vw; margin-bottom: 2vw; }
+  .sub-label     { font-size: 2.8vw; }
+  .sub-count     { font-size: 24vw; }
+  .sub-delta     { font-size: 2.2vw; margin-top: 2vw; }
+  .sparkline     { width: 50vw; height: 8vw; margin-top: 3vw; }
+  .updated-at    { font-size: 1.8vw; margin-top: 1.5vw; }
+
+  .video-grid       { gap: 4vw; }
+  .video-card       { gap: 1.5vw; padding-top: 1.5vw; }
+  .video-card::before { width: 8vw; }
+  .video-views      { font-size: 5vw; }
+  .video-views-sub  { font-size: 1.6vw; gap: 2vw; }
+  .video-views-wrap { gap: 2vw; }
+  .video-title      { font-size: 1.9vw; }
+  .video-age        { font-size: 1.5vw; }
+
+  .live-bar  { font-size: 1.8vw; gap: 1.2vw; bottom: 1.5vw; right: 4vw; }
+  .live-dot  { width: 1.2vw; height: 1.2vw; }
+  .live-sep  { margin: 0 0.8vw; }
+}

@@ -20,7 +20,7 @@ html, body {
   overflow: hidden;
   background: var(--bg);
   color: var(--text-primary);
-  cursor: none;
+
   font-family: 'Inter', sans-serif;
   font-variant-numeric: tabular-nums;
   -webkit-font-smoothing: antialiased;

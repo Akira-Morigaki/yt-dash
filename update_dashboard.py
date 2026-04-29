@@ -121,15 +121,21 @@ def main():
         if len(videos) >= 3:
             break
 
-    # Read previous subscriber count for delta
+    # Read previous data for delta and history
     prev_count = sub_count
+    history = []
     if os.path.exists(DATA_JSON):
         try:
             with open(DATA_JSON, encoding="utf-8") as f:
                 old = json.load(f)
             prev_count = old.get("subscribers", {}).get("current", sub_count)
+            history = old.get("history", [])
         except Exception:
             pass
+
+    # Append current reading to history (max 30 points)
+    history.append({"t": now.isoformat(), "n": sub_count})
+    history = history[-30:]
 
     data = {
         "subscribers": {
@@ -137,6 +143,7 @@ def main():
             "previous": prev_count,
             "updated_at": now.isoformat(),
         },
+        "history": history,
         "videos": videos,
     }
 

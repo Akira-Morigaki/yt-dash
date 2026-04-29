@@ -156,6 +156,23 @@ html, body {
 .sub-delta.delta--up   { color: #6AAA6A; }
 .sub-delta.delta--down { color: #AA6A6A; }
 
+.sparkline {
+  display: block;
+  width: 18vw;
+  height: 3vw;
+  margin-top: 1.8vw;
+  overflow: visible;
+}
+
+.updated-at {
+  font-weight: 300;
+  font-size: 0.45vw;
+  color: var(--text-dim);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  margin-top: 0.6vw;
+}
+
 /* Red accent line at the bottom of the left column */
 .red-line {
   position: absolute;

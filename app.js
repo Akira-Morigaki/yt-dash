@@ -117,6 +117,40 @@
     });
   }
 
+  /* ── Sparkline ─────────────────────────────────────── */
+
+  const sparkLineEl = document.getElementById('sparkLine');
+  const sparkFillEl = document.getElementById('sparkFill');
+  const updatedAtEl = document.getElementById('updatedAt');
+
+  function renderSparkline(history) {
+    if (!history || history.length < 2) return;
+    const W = 200, H = 40, pad = 2;
+    const vals = history.map(function (p) { return p.n; });
+    const min = Math.min.apply(null, vals);
+    const max = Math.max.apply(null, vals);
+    const range = max - min || 1;
+    function px(i) { return pad + (i / (vals.length - 1)) * (W - pad * 2); }
+    function py(v) { return H - pad - ((v - min) / range) * (H - pad * 2); }
+    const pts = vals.map(function (v, i) { return px(i) + ',' + py(v); }).join(' ');
+    sparkLineEl.setAttribute('points', pts);
+    const first = px(0) + ',' + py(vals[0]);
+    const last  = px(vals.length - 1) + ',' + py(vals[vals.length - 1]);
+    sparkFillEl.setAttribute('d',
+      'M ' + first + ' L ' + pts.split(' ').join(' L ') +
+      ' L ' + px(vals.length - 1) + ',' + (H - pad) +
+      ' L ' + px(0) + ',' + (H - pad) + ' Z'
+    );
+  }
+
+  function renderUpdatedAt(isoStr) {
+    if (!isoStr || !updatedAtEl) return;
+    const d = new Date(isoStr);
+    updatedAtEl.textContent = 'UPDATED ' + d.toLocaleTimeString('ja-JP', {
+      timeZone: 'Asia/Tokyo', hour: '2-digit', minute: '2-digit', hour12: false,
+    }) + ' JST';
+  }
+
   /* ── Subscriber section ────────────────────────────── */
 
   const subEl  = document.getElementById('subCount');
@@ -126,6 +160,8 @@
   countUp(subEl, displayedCount, state.subscribers.current, 800);
   displayedCount = state.subscribers.current;
   renderDelta(state.subscribers.current, state.subscribers.previous || state.subscribers.current);
+  renderSparkline(state.history);
+  renderUpdatedAt(state.subscribers.updated_at);
 
   /* ── Initial video render ──────────────────────────── */
   renderVideos(state.videos);
@@ -188,6 +224,8 @@
           renderVideos(newData.videos);
         }
 
+        renderSparkline(newData.history);
+        renderUpdatedAt(newData.subscribers.updated_at);
         state = newData;
       })
       .catch(function () { /* silent — keep showing last known data */ });

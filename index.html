@@ -6,7 +6,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="style.css?v=3">
+  <link rel="stylesheet" href="style.css?v=5">
   <script src="data.js?v=2"></script>
 
 </head>
@@ -23,6 +23,17 @@
         <p class="sub-label">SUBSCRIBERS</p>
         <p class="sub-count" id="subCount">—</p>
         <p class="sub-delta" id="subDelta"></p>
+        <svg class="sparkline" id="sparkline" viewBox="0 0 200 40" preserveAspectRatio="none" aria-hidden="true">
+          <defs>
+            <linearGradient id="sparkGrad" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stop-color="#FF0000" stop-opacity="0.25"/>
+              <stop offset="100%" stop-color="#FF0000" stop-opacity="0"/>
+            </linearGradient>
+          </defs>
+          <path id="sparkFill" fill="url(#sparkGrad)" stroke="none" d=""/>
+          <polyline id="sparkLine" fill="none" stroke="#FF0000" stroke-width="1.2" stroke-linejoin="round" stroke-linecap="round" points=""/>
+        </svg>
+        <p class="updated-at" id="updatedAt"></p>
       </div>
       <div class="red-line" aria-hidden="true"></div>
     </section>
@@ -40,6 +51,6 @@
     <span class="live-time" id="liveTime"></span>
   </footer>
 
-  <script src="app.js?v=4"></script>
+  <script src="app.js?v=5"></script>
 </body>
 </html>

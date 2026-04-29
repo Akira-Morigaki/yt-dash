@@ -1,30 +1,16 @@
 window.__YT_DATA__ = {
   "subscribers": {
-    "current": 12345,
-    "previous": 12333,
-    "updated_at": "2026-04-29T12:00:00+09:00"
+    "current": 1650,
+    "previous": 1650,
+    "updated_at": "2026-04-29T23:28:41.244103+09:00"
   },
   "videos": [
     {
-      "id": "PLACEHOLDER_1",
-      "title": "Loading... (run update_dashboard.py to populate)",
-      "views": 24500,
-      "published_at": "2026-04-27T20:00:00+09:00",
-      "thumbnail": "https://i.ytimg.com/vi/PLACEHOLDER_1/maxresdefault.jpg"
-    },
-    {
-      "id": "PLACEHOLDER_2",
-      "title": "Loading...",
-      "views": 12300,
-      "published_at": "2026-04-24T20:00:00+09:00",
-      "thumbnail": "https://i.ytimg.com/vi/PLACEHOLDER_2/maxresdefault.jpg"
-    },
-    {
-      "id": "PLACEHOLDER_3",
-      "title": "Loading...",
-      "views": 8700,
-      "published_at": "2026-04-22T20:00:00+09:00",
-      "thumbnail": "https://i.ytimg.com/vi/PLACEHOLDER_3/maxresdefault.jpg"
+      "id": "1N_kPwqIT_k",
+      "title": "Nikon ZR | Kamakura Sakura in Japan (4K)",
+      "views": 531,
+      "published_at": "2026-03-16T21:00:10+09:00",
+      "thumbnail": "https://i.ytimg.com/vi/1N_kPwqIT_k/maxresdefault.jpg"
     }
   ]
 };

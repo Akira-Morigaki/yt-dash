@@ -64,10 +64,10 @@ def main():
     now = datetime.now(jst)
     token = get_token()
 
-    # Subscriber count — read from subscriber-tracker history (no extra API call)
+    # Subscriber count — read from subscriber-tracker history (single source of truth)
     with open(HISTORY_JSON, encoding="utf-8") as f:
-        history = json.load(f)
-    sub_count = int(history["last_count"])
+        sub_history = json.load(f)
+    sub_count = int(sub_history["last_count"])
 
     # Latest non-Short videos — fetch up to 30 candidates to find 3 long-form
     search = api_get(

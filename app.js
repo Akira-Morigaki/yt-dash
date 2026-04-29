@@ -194,11 +194,10 @@
   document.addEventListener('keydown',  unlockAudio, { once: false });
   document.addEventListener('touchend', unlockAudio, { once: false });
 
-  function playChime(up) {
+  function playChime() {
     if (!audioCtx) return;
     try {
       if (audioCtx.state === 'suspended') audioCtx.resume();
-      if (!up) return;
       const notes = [880, 1108, 1320];
       notes.forEach(function (freq, i) {
         const osc = audioCtx.createOscillator();
@@ -227,7 +226,7 @@
 
         // Animate subscriber count if changed
         if (newCount !== displayedCount) {
-          playChime(newCount > displayedCount);
+          if (newCount > displayedCount) playChime();
           countUp(subEl, displayedCount, newCount, 1200);
           renderDelta(newCount, displayedCount);
           displayedCount = newCount;
@@ -255,7 +254,7 @@
     const from = displayedCount;
     const to   = from + delta;
     unlockAudio();
-    playChime(delta > 0);
+    if (delta > 0) playChime();
     countUp(subEl, from, to, 1200);
     renderDelta(to, from);
     displayedCount = to;

@@ -154,7 +154,7 @@
     const d = new Date(isoStr);
     updatedAtEl.textContent = 'UPDATED ' + d.toLocaleTimeString('ja-JP', {
       timeZone: 'Asia/Tokyo', hour: '2-digit', minute: '2-digit', hour12: false,
-    }) + ' JST';
+    });
   }
 
   /* ── Subscriber section ────────────────────────────── */
@@ -179,7 +179,7 @@
     liveTimeEl.textContent = new Date().toLocaleTimeString('ja-JP', {
       timeZone: 'Asia/Tokyo',
       hour: '2-digit', minute: '2-digit', hour12: false,
-    }) + ' JST';
+    });
   }
   updateTime();
   setInterval(updateTime, 1000);

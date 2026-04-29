@@ -333,3 +333,14 @@ html, body {
 }
 
 .live-time { color: var(--text-muted); }
+
+.live-sep {
+  display: inline-block;
+  width: 1px;
+  height: 0.8em;
+  background: var(--text-dim);
+  margin: 0 0.4vw;
+  vertical-align: middle;
+}
+
+.live-version { color: var(--text-dim); }

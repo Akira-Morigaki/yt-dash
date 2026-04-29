@@ -13,12 +13,13 @@ import tempfile
 import urllib.request
 from datetime import datetime, timezone, timedelta
 
-CHANNEL_ID   = "UCXDnQrp8Sao7ZmpL9Ws-SLA"
-BASE_DATA    = "https://www.googleapis.com/youtube/v3"
-GET_TOKEN_PY = "/Users/akira.ai/.claude/scheduled-tasks/youtube-oauth/get_token.py"
-DASH_DIR     = "/Users/akira.ai/.claude/scheduled-tasks/youtube-dashboard"
-DATA_JSON    = os.path.join(DASH_DIR, "data.json")
-DATA_JS      = os.path.join(DASH_DIR, "data.js")
+CHANNEL_ID    = "UCXDnQrp8Sao7ZmpL9Ws-SLA"
+BASE_DATA     = "https://www.googleapis.com/youtube/v3"
+GET_TOKEN_PY  = "/Users/akira.ai/.claude/scheduled-tasks/youtube-oauth/get_token.py"
+DASH_DIR      = "/Users/akira.ai/.claude/scheduled-tasks/youtube-dashboard"
+HISTORY_JSON  = "/Users/akira.ai/.claude/scheduled-tasks/youtube-subscriber-tracker/subscriber-history.json"
+DATA_JSON     = os.path.join(DASH_DIR, "data.json")
+DATA_JS       = os.path.join(DASH_DIR, "data.js")
 
 
 def get_token():
@@ -52,9 +53,10 @@ def main():
     now = datetime.now(jst)
     token = get_token()
 
-    # Subscriber count
-    ch = api_get(f"{BASE_DATA}/channels?part=statistics&id={CHANNEL_ID}", token)
-    sub_count = int(ch["items"][0]["statistics"]["subscriberCount"])
+    # Subscriber count — read from subscriber-tracker history (no extra API call)
+    with open(HISTORY_JSON, encoding="utf-8") as f:
+        history = json.load(f)
+    sub_count = int(history["last_count"])
 
     # Latest videos (fetch more to filter out Shorts)
     search = api_get(

@@ -198,7 +198,8 @@
     if (!audioCtx) return;
     try {
       if (audioCtx.state === 'suspended') audioCtx.resume();
-      const notes = up ? [880, 1108, 1320] : [1320, 1108, 880];
+      if (!up) return;
+      const notes = [880, 1108, 1320];
       notes.forEach(function (freq, i) {
         const osc = audioCtx.createOscillator();
         const gain = audioCtx.createGain();

@@ -180,18 +180,33 @@
 
   /* ── Chime ─────────────────────────────────────────── */
 
-  function playChime(up) {
+  var audioCtx = null;
+
+  function unlockAudio() {
+    if (audioCtx) return;
     try {
-      const ctx = new (window.AudioContext || window.webkitAudioContext)();
+      audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+    } catch (e) {}
+  }
+
+  // Unlock on first user interaction
+  document.addEventListener('click',    unlockAudio, { once: false });
+  document.addEventListener('keydown',  unlockAudio, { once: false });
+  document.addEventListener('touchend', unlockAudio, { once: false });
+
+  function playChime(up) {
+    if (!audioCtx) return;
+    try {
+      if (audioCtx.state === 'suspended') audioCtx.resume();
       const notes = up ? [880, 1108] : [660, 523];
       notes.forEach(function (freq, i) {
-        const osc = ctx.createOscillator();
-        const gain = ctx.createGain();
+        const osc = audioCtx.createOscillator();
+        const gain = audioCtx.createGain();
         osc.connect(gain);
-        gain.connect(ctx.destination);
+        gain.connect(audioCtx.destination);
         osc.type = 'sine';
         osc.frequency.value = freq;
-        const t = ctx.currentTime + i * 0.2;
+        const t = audioCtx.currentTime + i * 0.2;
         gain.gain.setValueAtTime(0, t);
         gain.gain.linearRampToValueAtTime(0.22, t + 0.02);
         gain.gain.exponentialRampToValueAtTime(0.001, t + 0.9);

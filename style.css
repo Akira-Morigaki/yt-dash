@@ -165,9 +165,9 @@ html, body {
 }
 
 .updated-at {
-  font-weight: 300;
-  font-size: 0.45vw;
-  color: var(--text-dim);
+  font-weight: 400;
+  font-size: 0.52vw;
+  color: var(--text-muted);
   letter-spacing: 0.1em;
   text-transform: uppercase;
   margin-top: 0.6vw;

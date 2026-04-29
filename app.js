@@ -14,7 +14,6 @@
   function fmtViews(n) {
     if (n >= 100000000) return (n / 100000000).toFixed(1) + '億';
     if (n >= 10000)     return (n / 10000).toFixed(1) + '万';
-    if (n >= 1000)      return (n / 1000).toFixed(1) + 'K';
     return n.toLocaleString('ja-JP');
   }
 

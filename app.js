@@ -247,4 +247,16 @@
   }
 
   setInterval(fetchAndUpdate, 60000);
+
+  /* ── Test helper (call window.__sim(+10) in console) ── */
+  window.__sim = function (delta) {
+    delta = delta || 1;
+    const from = displayedCount;
+    const to   = from + delta;
+    unlockAudio();
+    playChime(delta > 0);
+    countUp(subEl, from, to, 1200);
+    renderDelta(to, from);
+    displayedCount = to;
+  };
 })();

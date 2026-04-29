@@ -386,6 +386,59 @@ html, body {
   .live-sep { margin: 0 0.6vw; }
 }
 
+/* ─── iPad 横持ち (aspect ≤ 31/20 = 1.55, excludes 16:10 MacBooks) ──
+   Stacked: subscribers on top, videos at bottom.
+   Comes after the broader landscape rule so it overrides for iPad. */
+@media (orientation: landscape) and (max-aspect-ratio: 31/20) {
+  .letterbox { display: none; }
+
+  .layout {
+    flex-direction: column;
+    height: 100dvh;
+    padding: 0 0 2vh;
+  }
+
+  .col-left {
+    width: 100%;
+    flex: 0 0 50%;
+    padding: 3vh 5vw 1vh;
+    text-align: center;
+    border-bottom: 1px solid rgba(255,255,255,0.04);
+  }
+
+  .col-sep { display: none; }
+
+  .col-right {
+    flex: 1;
+    padding: 2vh 4vw;
+  }
+
+  .red-line {
+    left: 5vw;
+    right: 5vw;
+    background: linear-gradient(90deg, transparent, var(--red) 50%, transparent 100%);
+  }
+
+  .channel-name  { font-size: 1.2vw; margin-bottom: 1.5vh; }
+  .sub-label     { font-size: 1.4vw; }
+  .sub-count     { font-size: 14vw; }
+  .sub-delta     { font-size: 1.2vw; margin-top: 1.5vh; }
+  .updated-at    { font-size: 1vw; margin-top: 1vh; }
+
+  .video-grid       { gap: 2vw; }
+  .video-card       { gap: 0.8vw; padding-top: 0.8vw; }
+  .video-card::before { width: 4vw; }
+  .video-views      { font-size: 2.6vw; }
+  .video-views-wrap { gap: 1vw; }
+  .video-views-sub  { font-size: 0.9vw; }
+  .video-title      { font-size: 1.1vw; }
+  .video-age        { font-size: 0.9vw; }
+
+  .live-bar { font-size: 1vw; gap: 0.7vw; bottom: 1.5vh; right: 2.5vw; }
+  .live-dot { width: 0.8vw; height: 0.8vw; }
+  .live-sep { margin: 0 0.5vw; }
+}
+
 /* ─── iPad 縦持ち (portrait) ────────────────────────── */
 @media (orientation: portrait) {
   .letterbox { display: none; }

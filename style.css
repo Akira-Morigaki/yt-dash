@@ -130,7 +130,15 @@ html, body {
   margin-bottom: 0.3vw;
 }
 
+.sub-count-wrap {
+  position: relative;
+  display: inline-block;
+  isolation: isolate;
+}
+
 .sub-count {
+  position: relative;
+  z-index: 1;
   font-family: 'Bebas Neue', 'Anton', 'Impact', sans-serif;
   font-size: 11.5vw;
   line-height: 0.88;
@@ -157,10 +165,13 @@ html, body {
 .sub-delta.delta--down { color: #AA6A6A; }
 
 .sparkline {
-  display: block;
-  width: 18vw;
-  height: 3vw;
-  margin-top: 1.8vw;
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 0;
+  opacity: 0.55;
+  pointer-events: none;
   overflow: visible;
 }
 
@@ -359,7 +370,6 @@ html, body {
   .sub-label     { font-size: 2vw; }
   .sub-count     { font-size: 15vw; }
   .sub-delta     { font-size: 1.6vw; margin-top: 1.8vw; }
-  .sparkline     { width: 24vw; height: 4.5vw; margin-top: 2.5vw; }
   .updated-at    { font-size: 1.4vw; margin-top: 1.2vw; }
 
   .video-grid       { gap: 2.5vw; }
@@ -411,7 +421,6 @@ html, body {
   .sub-label     { font-size: 2.8vw; }
   .sub-count     { font-size: 24vw; }
   .sub-delta     { font-size: 2.2vw; margin-top: 2vw; }
-  .sparkline     { width: 50vw; height: 8vw; margin-top: 3vw; }
   .updated-at    { font-size: 1.8vw; margin-top: 1.5vw; }
 
   .video-grid       { gap: 4vw; }

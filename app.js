@@ -95,8 +95,14 @@
 
       const views24h = document.createElement('div');
       views24h.className = 'video-views-sub';
-      const v24 = video.views_24h || 0;
-      views24h.textContent = v24 > 0 ? '+' + fmtViews(v24) + ' / 24h' : '— / 24h';
+      const v24 = video.views_24h;
+      if (v24 == null) {
+        views24h.textContent = '— / 24h';
+      } else if (v24 > 0) {
+        views24h.textContent = '+' + fmtViews(v24) + ' / 24h';
+      } else {
+        views24h.textContent = '0 / 24h';
+      }
 
       viewsWrap.appendChild(views);
       viewsWrap.appendChild(views24h);

@@ -7,7 +7,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="style.css?v=9">
+  <link rel="stylesheet" href="style.css?v=10">
   <script src="data.js?v=2"></script>
 
 </head>
@@ -22,18 +22,20 @@
       <div class="sub-inner">
         <p class="channel-name">AKIRA.M</p>
         <p class="sub-label">SUBSCRIBERS</p>
-        <p class="sub-count" id="subCount">—</p>
+        <div class="sub-count-wrap">
+          <svg class="sparkline" id="sparkline" viewBox="0 0 200 40" preserveAspectRatio="none" aria-hidden="true">
+            <defs>
+              <linearGradient id="sparkGrad" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0%" stop-color="#FF0000" stop-opacity="0.55"/>
+                <stop offset="100%" stop-color="#FF0000" stop-opacity="0"/>
+              </linearGradient>
+            </defs>
+            <path id="sparkFill" fill="url(#sparkGrad)" stroke="none" d=""/>
+            <polyline id="sparkLine" fill="none" stroke="#FF0000" stroke-width="1.2" stroke-linejoin="round" stroke-linecap="round" points=""/>
+          </svg>
+          <p class="sub-count" id="subCount">—</p>
+        </div>
         <p class="sub-delta" id="subDelta"></p>
-        <svg class="sparkline" id="sparkline" viewBox="0 0 200 40" preserveAspectRatio="none" aria-hidden="true">
-          <defs>
-            <linearGradient id="sparkGrad" x1="0" y1="0" x2="0" y2="1">
-              <stop offset="0%" stop-color="#FF0000" stop-opacity="0.25"/>
-              <stop offset="100%" stop-color="#FF0000" stop-opacity="0"/>
-            </linearGradient>
-          </defs>
-          <path id="sparkFill" fill="url(#sparkGrad)" stroke="none" d=""/>
-          <polyline id="sparkLine" fill="none" stroke="#FF0000" stroke-width="1.2" stroke-linejoin="round" stroke-linecap="round" points=""/>
-        </svg>
         <p class="updated-at" id="updatedAt"></p>
       </div>
       <div class="red-line" aria-hidden="true"></div>
@@ -51,9 +53,9 @@
     <span class="live-label">LIVE</span>
     <span class="live-time" id="liveTime"></span>
     <span class="live-sep" aria-hidden="true"></span>
-    <span class="live-version">v9</span>
+    <span class="live-version">v10</span>
   </footer>
 
-  <script src="app.js?v=8"></script>
+  <script src="app.js?v=9"></script>
 </body>
 </html>

@@ -19,6 +19,7 @@ BASE_ANALYTICS = "https://youtubeanalytics.googleapis.com/v2/reports"
 GET_TOKEN_PY  = "/Users/akira.ai/.claude/scheduled-tasks/youtube-oauth/get_token.py"
 DASH_DIR      = "/Users/akira.ai/.claude/scheduled-tasks/youtube-dashboard"
 HISTORY_JSON  = "/Users/akira.ai/.claude/scheduled-tasks/youtube-subscriber-tracker/subscriber-history.json"
+VIDEO_VIEWS_HISTORY = "/Users/akira.ai/.claude/scheduled-tasks/youtube-dashboard-updater/video-views-history.json"
 DATA_JSON     = os.path.join(DASH_DIR, "data.json")
 DATA_JS       = os.path.join(DASH_DIR, "data.js")
 
@@ -88,38 +89,55 @@ def main():
     else:
         items = []
 
+    # Load per-video view snapshot history (for 24h delta calculation)
+    snapshots = {}
+    if os.path.exists(VIDEO_VIEWS_HISTORY):
+        try:
+            with open(VIDEO_VIEWS_HISTORY, encoding="utf-8") as f:
+                snapshots = json.load(f)
+        except Exception:
+            snapshots = {}
+
     videos = []
+    new_snapshots = {}
     for item in items:
         if is_short(item):
             continue  # Skip Shorts (duration ≤ 180s かつ #shorts タグ、または60秒未満)
         pub = datetime.fromisoformat(item["snippet"]["publishedAt"].replace("Z", "+00:00"))
         vid_id = item["id"]
+        current_views = int(item["statistics"].get("viewCount", 0))
 
-        # 直近24hの再生数 — Analyticsは日付単位なので昨日の値で近似
-        yesterday = (now.date() - timedelta(days=1)).isoformat()
-        try:
-            ana = api_get(
-                f"{BASE_ANALYTICS}?ids=channel==MINE"
-                f"&filters=video=={vid_id}"
-                f"&startDate={yesterday}&endDate={yesterday}"
-                f"&metrics=views",
-                token,
-            )
-            rows = ana.get("rows", [])
-            views_24h = int(rows[0][0]) if rows else 0
-        except Exception:
-            views_24h = 0
+        # 24h delta — find snapshot closest to 24h ago, but only if ≥23h old
+        prev_snaps = snapshots.get(vid_id, [])
+        target = now - timedelta(hours=24)
+        cutoff = now - timedelta(hours=23)
+        eligible = [s for s in prev_snaps if datetime.fromisoformat(s["t"]) <= cutoff]
+        if eligible:
+            best = min(eligible, key=lambda s: abs((datetime.fromisoformat(s["t"]) - target).total_seconds()))
+            views_24h = current_views - int(best["views"])
+        else:
+            views_24h = None
+
+        # Append current snapshot, prune entries older than 25h
+        prune_cutoff = now - timedelta(hours=25)
+        kept = [s for s in prev_snaps if datetime.fromisoformat(s["t"]) > prune_cutoff]
+        kept.append({"t": now.isoformat(), "views": current_views})
+        new_snapshots[vid_id] = kept
 
         videos.append({
             "id": vid_id,
             "title": item["snippet"]["title"],
-            "views": int(item["statistics"].get("viewCount", 0)),
+            "views": current_views,
             "views_24h": views_24h,
             "published_at": pub.astimezone(jst).isoformat(),
             "thumbnail": f"https://i.ytimg.com/vi/{vid_id}/maxresdefault.jpg",
         })
         if len(videos) >= 3:
             break
+
+    # Save updated snapshots
+    os.makedirs(os.path.dirname(VIDEO_VIEWS_HISTORY), exist_ok=True)
+    atomic_write(VIDEO_VIEWS_HISTORY, json.dumps(new_snapshots, ensure_ascii=False, indent=2) + "\n")
 
     # Read previous data for delta and history
     prev_count = sub_count

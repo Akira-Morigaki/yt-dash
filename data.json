@@ -2,7 +2,7 @@
   "subscribers": {
     "current": 1653,
     "previous": 1653,
-    "updated_at": "2026-04-30T02:12:05.149341+09:00"
+    "updated_at": "2026-04-30T02:19:41.747095+09:00"
   },
   "history": [
     {
@@ -64,6 +64,10 @@
     {
       "t": "2026-04-30T02:12:05.149341+09:00",
       "n": 1653
+    },
+    {
+      "t": "2026-04-30T02:19:41.747095+09:00",
+      "n": 1653
     }
   ],
   "videos": [
@@ -71,7 +75,7 @@
       "id": "1N_kPwqIT_k",
       "title": "Nikon ZR | Kamakura Sakura in Japan (4K)",
       "views": 531,
-      "views_24h": 0,
+      "views_24h": null,
       "published_at": "2026-03-16T21:00:10+09:00",
       "thumbnail": "https://i.ytimg.com/vi/1N_kPwqIT_k/maxresdefault.jpg"
     },
@@ -79,7 +83,7 @@
       "id": "KCfcRhp_xsM",
       "title": "Nikon ZR | Cinematic Kyoto",
       "views": 3622,
-      "views_24h": 0,
+      "views_24h": null,
       "published_at": "2026-02-11T19:00:26+09:00",
       "thumbnail": "https://i.ytimg.com/vi/KCfcRhp_xsM/maxresdefault.jpg"
     },
@@ -87,7 +91,7 @@
       "id": "SDgTJsGKsrQ",
       "title": "Nikon ZR with Hasselblad - Japan Autumn - Golden Waves: Hakone Sengokuhara Susuki (4K)",
       "views": 1079,
-      "views_24h": 0,
+      "views_24h": null,
       "published_at": "2025-12-12T19:00:47+09:00",
       "thumbnail": "https://i.ytimg.com/vi/SDgTJsGKsrQ/maxresdefault.jpg"
     }

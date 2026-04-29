@@ -1,8 +1,8 @@
 window.__YT_DATA__ = {
   "subscribers": {
     "current": 1653,
-    "previous": 1650,
-    "updated_at": "2026-04-29T23:34:15.555914+09:00"
+    "previous": 1653,
+    "updated_at": "2026-04-29T23:45:41.450968+09:00"
   },
   "videos": [
     {
@@ -11,6 +11,20 @@ window.__YT_DATA__ = {
       "views": 531,
       "published_at": "2026-03-16T21:00:10+09:00",
       "thumbnail": "https://i.ytimg.com/vi/1N_kPwqIT_k/maxresdefault.jpg"
+    },
+    {
+      "id": "KCfcRhp_xsM",
+      "title": "Nikon ZR | Cinematic Kyoto",
+      "views": 3621,
+      "published_at": "2026-02-11T19:00:26+09:00",
+      "thumbnail": "https://i.ytimg.com/vi/KCfcRhp_xsM/maxresdefault.jpg"
+    },
+    {
+      "id": "SDgTJsGKsrQ",
+      "title": "Nikon ZR with Hasselblad - Japan Autumn - Golden Waves: Hakone Sengokuhara Susuki (4K)",
+      "views": 1079,
+      "published_at": "2025-12-12T19:00:47+09:00",
+      "thumbnail": "https://i.ytimg.com/vi/SDgTJsGKsrQ/maxresdefault.jpg"
     }
   ]
 };

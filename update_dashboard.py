@@ -40,6 +40,16 @@ def parse_duration(iso):
     return int(m.group(1) or 0) * 3600 + int(m.group(2) or 0) * 60 + int(m.group(3) or 0)
 
 
+def is_short(item):
+    """True if the video is a YouTube Short (duration ≤ 180s AND #shorts tag)."""
+    duration = parse_duration(item["contentDetails"]["duration"])
+    if duration > 180:
+        return False
+    snippet = item["snippet"]
+    text = (snippet.get("title", "") + " " + snippet.get("description", "")).lower()
+    return "#short" in text or duration < 60
+
+
 def atomic_write(path, content):
     dir_ = os.path.dirname(path)
     with tempfile.NamedTemporaryFile("w", dir=dir_, delete=False, suffix=".tmp", encoding="utf-8") as f:
@@ -58,10 +68,10 @@ def main():
         history = json.load(f)
     sub_count = int(history["last_count"])
 
-    # Latest videos (fetch more to filter out Shorts)
+    # Latest non-Short videos — fetch up to 30 candidates to find 3 long-form
     search = api_get(
         f"{BASE_DATA}/search?part=snippet&channelId={CHANNEL_ID}"
-        f"&type=video&order=date&maxResults=8",
+        f"&type=video&order=date&maxResults=30",
         token,
     )
     video_ids = [item["id"]["videoId"] for item in search.get("items", [])]
@@ -71,14 +81,16 @@ def main():
             f"{BASE_DATA}/videos?part=snippet,contentDetails,statistics&id={','.join(video_ids)}",
             token,
         )
-        items = vids.get("items", [])
+        # Preserve publish-date order from search results
+        order = {vid_id: i for i, vid_id in enumerate(video_ids)}
+        items = sorted(vids.get("items", []), key=lambda x: order.get(x["id"], 999))
     else:
         items = []
 
     videos = []
     for item in items:
-        if parse_duration(item["contentDetails"]["duration"]) < 60:
-            continue  # Skip Shorts
+        if is_short(item):
+            continue  # Skip Shorts (duration ≤ 180s かつ #shorts タグ、または60秒未満)
         pub = datetime.fromisoformat(item["snippet"]["publishedAt"].replace("Z", "+00:00"))
         vid_id = item["id"]
         videos.append({

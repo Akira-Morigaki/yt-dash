@@ -15,6 +15,7 @@ from datetime import datetime, timezone, timedelta
 
 CHANNEL_ID    = "UCXDnQrp8Sao7ZmpL9Ws-SLA"
 BASE_DATA     = "https://www.googleapis.com/youtube/v3"
+BASE_ANALYTICS = "https://youtubeanalytics.googleapis.com/v2/reports"
 GET_TOKEN_PY  = "/Users/akira.ai/.claude/scheduled-tasks/youtube-oauth/get_token.py"
 DASH_DIR      = "/Users/akira.ai/.claude/scheduled-tasks/youtube-dashboard"
 HISTORY_JSON  = "/Users/akira.ai/.claude/scheduled-tasks/youtube-subscriber-tracker/subscriber-history.json"
@@ -93,10 +94,27 @@ def main():
             continue  # Skip Shorts (duration ≤ 180s かつ #shorts タグ、または60秒未満)
         pub = datetime.fromisoformat(item["snippet"]["publishedAt"].replace("Z", "+00:00"))
         vid_id = item["id"]
+
+        # 直近24hの再生数 — Analyticsは日付単位なので昨日の値で近似
+        yesterday = (now.date() - timedelta(days=1)).isoformat()
+        try:
+            ana = api_get(
+                f"{BASE_ANALYTICS}?ids=channel==MINE"
+                f"&filters=video=={vid_id}"
+                f"&startDate={yesterday}&endDate={yesterday}"
+                f"&metrics=views",
+                token,
+            )
+            rows = ana.get("rows", [])
+            views_24h = int(rows[0][0]) if rows else 0
+        except Exception:
+            views_24h = 0
+
         videos.append({
             "id": vid_id,
             "title": item["snippet"]["title"],
             "views": int(item["statistics"].get("viewCount", 0)),
+            "views_24h": views_24h,
             "published_at": pub.astimezone(jst).isoformat(),
             "thumbnail": f"https://i.ytimg.com/vi/{vid_id}/maxresdefault.jpg",
         })

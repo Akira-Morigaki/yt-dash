@@ -6,11 +6,12 @@
 
 :root {
   --red: #FF0000;
-  --bg: #000000;
-  --text-primary: #F5F5F0;
-  --text-muted: #686860;
-  --text-dim: #404038;
-  --letterbox-h: 3.636vh; /* 40px @ 1100px viewport */
+  --bg: #080808;
+  --text-primary: #F0F0EB;
+  --text-muted: #606058;
+  --text-dim: #383830;
+  --letterbox-h: 3.636vh;
+  --col-sep: rgba(255, 255, 255, 0.04);
 }
 
 html, body {
@@ -25,31 +26,59 @@ html, body {
   -webkit-font-smoothing: antialiased;
 }
 
-/* ─── Film grain ───────────────────────────────────────── */
+/* ─── Film grain ───────────────────────────────────── */
 .grain {
   position: fixed;
   inset: 0;
-  z-index: 100;
+  z-index: 102;
   pointer-events: none;
-  opacity: 0.04;
+  opacity: 0.045;
   background-image: url('grain.svg');
   background-repeat: repeat;
   background-size: 300px 300px;
 }
 
-/* ─── Letterbox bars ───────────────────────────────────── */
+/* ─── Scanlines ────────────────────────────────────── */
+.grain::after {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background: repeating-linear-gradient(
+    0deg,
+    transparent,
+    transparent 3px,
+    rgba(0, 0, 0, 0.06) 3px,
+    rgba(0, 0, 0, 0.06) 4px
+  );
+  pointer-events: none;
+}
+
+/* ─── Vignette ─────────────────────────────────────── */
+.vignette {
+  position: fixed;
+  inset: 0;
+  z-index: 101;
+  pointer-events: none;
+  background: radial-gradient(
+    ellipse 80% 80% at 50% 50%,
+    transparent 45%,
+    rgba(0, 0, 0, 0.55) 100%
+  );
+}
+
+/* ─── Letterbox bars ───────────────────────────────── */
 .letterbox {
   position: fixed;
   left: 0;
   right: 0;
   height: var(--letterbox-h);
-  background: var(--bg);
+  background: #000;
   z-index: 50;
 }
 .letterbox--top    { top: 0; }
 .letterbox--bottom { bottom: 0; }
 
-/* ─── Main layout ──────────────────────────────────────── */
+/* ─── Main layout ──────────────────────────────────── */
 .layout {
   display: flex;
   height: 100vh;
@@ -57,7 +86,21 @@ html, body {
   padding-bottom: var(--letterbox-h);
 }
 
-/* ─── Left column — subscriber count ──────────────────── */
+/* ─── Column separator ─────────────────────────────── */
+.col-sep {
+  width: 1px;
+  background: linear-gradient(
+    180deg,
+    transparent 0%,
+    var(--col-sep) 15%,
+    var(--col-sep) 85%,
+    transparent 100%
+  );
+  flex-shrink: 0;
+  margin: 3vh 0;
+}
+
+/* ─── Left column — subscriber count ──────────────── */
 .col-left {
   width: 40vw;
   display: flex;
@@ -67,39 +110,50 @@ html, body {
   position: relative;
 }
 
-.sub-inner {
-  display: flex;
-  flex-direction: column;
+.channel-name {
+  font-weight: 500;
+  font-size: 0.65vw;
+  letter-spacing: 0.5em;
+  color: var(--red);
+  text-transform: uppercase;
+  margin-bottom: 1.8vw;
+  opacity: 0.8;
 }
 
 .sub-label {
   font-weight: 300;
-  font-size: 0.8vw;
+  font-size: 0.75vw;
   letter-spacing: 0.38em;
   color: var(--text-muted);
   text-transform: uppercase;
-  margin-bottom: 0.4vw;
+  margin-bottom: 0.3vw;
 }
 
 .sub-count {
   font-family: 'Bebas Neue', 'Anton', 'Impact', sans-serif;
   font-size: 11.5vw;
   line-height: 0.88;
-  background: linear-gradient(175deg, #FFFFFF 0%, #C0C0B8 100%);
+  background: linear-gradient(175deg, #FFFFFF 0%, #B8B8B0 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
-  filter: drop-shadow(0 0.15vw 0.6vw rgba(255, 255, 255, 0.07));
+  filter:
+    drop-shadow(0 0 2vw rgba(255, 255, 255, 0.06))
+    drop-shadow(0 0.1vw 0.8vw rgba(255, 255, 255, 0.04));
   letter-spacing: -0.01em;
 }
 
 .sub-delta {
   font-weight: 400;
-  font-size: 0.6vw;
+  font-size: 0.58vw;
   color: var(--text-muted);
-  margin-top: 1.2vw;
-  letter-spacing: 0.06em;
+  margin-top: 1.1vw;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
 }
+
+.sub-delta.delta--up   { color: #6AAA6A; }
+.sub-delta.delta--down { color: #AA6A6A; }
 
 /* Red accent line at the bottom of the left column */
 .red-line {
@@ -108,15 +162,15 @@ html, body {
   left: 5vw;
   right: 4vw;
   height: 1px;
-  background: var(--red);
+  background: linear-gradient(90deg, var(--red) 0%, transparent 100%);
 }
 
-/* ─── Right column — video grid ────────────────────────── */
+/* ─── Right column — video grid ────────────────────── */
 .col-right {
-  width: 60vw;
+  flex: 1;
   display: flex;
   align-items: center;
-  padding: 0 3vw 0 2vw;
+  padding: 0 3vw 0 2.5vw;
 }
 
 .video-grid {
@@ -130,27 +184,66 @@ html, body {
   display: flex;
   flex-direction: column;
   gap: 0.55vw;
+  border-top: 1px solid rgba(255, 255, 255, 0.06);
+  padding-top: 0.6vw;
+  position: relative;
+  min-width: 0; /* prevent image intrinsic size from blowing out 1fr columns */
+}
+
+/* Red accent top rule on card */
+.video-card::before {
+  content: '';
+  position: absolute;
+  top: -1px;
+  left: 0;
+  width: 2.5vw;
+  height: 1px;
+  background: var(--red);
 }
 
 .video-thumb-wrap {
+  /* padding-top trick guarantees identical 16:9 height for every card */
   width: 100%;
-  aspect-ratio: 16 / 9;
-  border-radius: 0.2vw;
+  padding-top: 56.25%;
+  height: 0;
+  position: relative;
+  border-radius: 0.15vw;
   overflow: hidden;
-  box-shadow: 0 0.25vw 1.8vw rgba(0, 0, 0, 0.7);
+  box-shadow:
+    0 0.3vw 2vw rgba(0, 0, 0, 0.8),
+    0 0 0 1px rgba(255, 255, 255, 0.04);
   background: #111;
 }
 
 .video-thumb {
+  position: absolute;
+  top: 0; left: 0;
   width: 100%;
   height: 100%;
   object-fit: cover;
   display: block;
-  transition: opacity 0.3s ease;
+  transition: opacity 0.4s ease;
 }
 
-.video-thumb.loading {
-  opacity: 0;
+.video-thumb.loading { opacity: 0; }
+
+/* Gradient overlay at bottom of thumbnail for depth */
+.video-thumb-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    180deg,
+    transparent 50%,
+    rgba(0, 0, 0, 0.35) 100%
+  );
+  pointer-events: none;
+}
+
+.video-views-wrap {
+  display: flex;
+  align-items: baseline;
+  gap: 0.6vw;
+  margin-top: 0.15vw;
 }
 
 .video-views {
@@ -159,13 +252,20 @@ html, body {
   color: var(--text-primary);
   letter-spacing: -0.015em;
   line-height: 1;
-  margin-top: 0.2vw;
+}
+
+.video-views-sub {
+  font-weight: 300;
+  font-size: 0.52vw;
+  color: var(--text-muted);
+  letter-spacing: 0.06em;
+  line-height: 1;
 }
 
 .video-title {
   font-weight: 300;
-  font-size: 0.62vw;
-  color: #909088;
+  font-size: 0.6vw;
+  color: #888880;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -174,13 +274,13 @@ html, body {
 
 .video-age {
   font-weight: 300;
-  font-size: 0.5vw;
+  font-size: 0.48vw;
   color: var(--text-dim);
-  letter-spacing: 0.04em;
+  letter-spacing: 0.06em;
   text-transform: uppercase;
 }
 
-/* ─── LIVE indicator ───────────────────────────────────── */
+/* ─── LIVE indicator ───────────────────────────────── */
 .live-bar {
   position: fixed;
   bottom: calc(var(--letterbox-h) + 1vh);
@@ -189,9 +289,9 @@ html, body {
   display: flex;
   align-items: center;
   gap: 0.45vw;
-  font-size: 0.52vw;
+  font-size: 0.5vw;
   color: var(--text-muted);
-  letter-spacing: 0.12em;
+  letter-spacing: 0.14em;
 }
 
 .live-dot {
@@ -204,16 +304,14 @@ html, body {
 }
 
 @keyframes pulse {
-  0%, 100% { opacity: 1;   transform: scale(1); }
-  50%       { opacity: 0.3; transform: scale(0.8); }
+  0%, 100% { opacity: 1;   transform: scale(1); box-shadow: 0 0 0 0 rgba(255,0,0,0.4); }
+  50%       { opacity: 0.4; transform: scale(0.8); box-shadow: 0 0 0 0.3vw rgba(255,0,0,0); }
 }
 
 .live-label {
   color: var(--red);
   font-weight: 600;
-  letter-spacing: 0.15em;
+  letter-spacing: 0.18em;
 }
 
-.live-time {
-  color: var(--text-muted);
-}
+.live-time { color: var(--text-muted); }

@@ -1,29 +1,25 @@
 (function () {
   'use strict';
 
-  const data = window.__YT_DATA__;
-  if (!data) {
-    setTimeout(() => location.reload(), 5000);
-    return;
-  }
+  /* ── Initial data from data.js ─────────────────────── */
+  let state = window.__YT_DATA__;
+  if (!state) return;
 
-  /* ── Formatters ────────────────────────────────────────── */
+  /* ── Formatters ────────────────────────────────────── */
 
   function fmtSubs(n) {
     return n.toLocaleString('ja-JP');
   }
 
   function fmtViews(n) {
-    if (n >= 100000000) return (n / 100000000).toFixed(1).replace(/\.0$/, '') + '億';
-    if (n >= 10000)     return (n / 10000).toFixed(1).replace(/\.0$/, '') + '万';
-    if (n >= 1000)      return (n / 1000).toFixed(1).replace(/\.0$/, '') + 'K';
+    if (n >= 100000000) return (n / 100000000).toFixed(1) + '億';
+    if (n >= 10000)     return (n / 10000).toFixed(1) + '万';
+    if (n >= 1000)      return (n / 1000).toFixed(1) + 'K';
     return n.toLocaleString('ja-JP');
   }
 
   function relAge(isoStr) {
-    const pub  = new Date(isoStr);
-    const now  = new Date();
-    const days = Math.floor((now - pub) / 86400000);
+    const days = Math.floor((Date.now() - new Date(isoStr)) / 86400000);
     if (days === 0) return 'today';
     if (days === 1) return '1 day ago';
     if (days <  7)  return days + ' days ago';
@@ -31,7 +27,7 @@
     return w === 1 ? '1 week ago' : w + ' weeks ago';
   }
 
-  /* ── Count-up animation ────────────────────────────────── */
+  /* ── Count-up animation ────────────────────────────── */
 
   function easeOutCubic(t) { return 1 - Math.pow(1 - t, 3); }
 
@@ -45,81 +41,134 @@
     requestAnimationFrame(tick);
   }
 
-  /* ── Subscriber section ────────────────────────────────── */
+  /* ── Delta display ─────────────────────────────────── */
 
-  const sub     = data.subscribers || {};
-  const current = sub.current  || 0;
-  const prev    = sub.previous || current;
-  const subEl   = document.getElementById('subCount');
   const deltaEl = document.getElementById('subDelta');
 
-  countUp(subEl, prev, current, 800);
-
-  const delta = current - prev;
-  if (delta > 0) {
-    deltaEl.textContent = '▲ +' + delta.toLocaleString('ja-JP') + ' since last update';
-    deltaEl.style.color = '#7CB87C';
-  } else if (delta < 0) {
-    deltaEl.textContent = '▼ ' + Math.abs(delta).toLocaleString('ja-JP') + ' since last update';
-    deltaEl.style.color = '#B87C7C';
-  } else {
-    deltaEl.textContent = 'no change since last update';
+  function renderDelta(current, previous) {
+    const d = current - previous;
+    if (d > 0) {
+      deltaEl.textContent = '▲ +' + d.toLocaleString('ja-JP');
+      deltaEl.className = 'sub-delta delta--up';
+    } else if (d < 0) {
+      deltaEl.textContent = '▼ ' + Math.abs(d).toLocaleString('ja-JP');
+      deltaEl.className = 'sub-delta delta--down';
+    } else {
+      deltaEl.textContent = '— no change';
+      deltaEl.className = 'sub-delta';
+    }
   }
 
-  /* ── Video grid ────────────────────────────────────────── */
+  /* ── Video grid ────────────────────────────────────── */
 
   const grid = document.getElementById('videoGrid');
-  (data.videos || []).slice(0, 3).forEach(function (video) {
-    const card = document.createElement('div');
-    card.className = 'video-card';
 
-    const thumbWrap = document.createElement('div');
-    thumbWrap.className = 'video-thumb-wrap';
+  function renderVideos(videos) {
+    grid.innerHTML = '';
+    (videos || []).slice(0, 3).forEach(function (video) {
+      const card = document.createElement('div');
+      card.className = 'video-card';
 
-    const img = document.createElement('img');
-    img.className = 'video-thumb loading';
-    img.alt = '';
-    img.src = video.thumbnail || ('https://i.ytimg.com/vi/' + video.id + '/maxresdefault.jpg');
-    img.addEventListener('load',  function () { img.classList.remove('loading'); });
-    img.addEventListener('error', function () {
-      img.src = 'https://i.ytimg.com/vi/' + video.id + '/hqdefault.jpg';
+      const thumbWrap = document.createElement('div');
+      thumbWrap.className = 'video-thumb-wrap';
+
+      const img = document.createElement('img');
+      img.className = 'video-thumb loading';
+      img.alt = '';
+      img.src = video.thumbnail || ('https://i.ytimg.com/vi/' + video.id + '/maxresdefault.jpg');
+      img.addEventListener('load',  function () { img.classList.remove('loading'); });
+      img.addEventListener('error', function () {
+        img.src = 'https://i.ytimg.com/vi/' + video.id + '/hqdefault.jpg';
+      });
+
+      const overlay = document.createElement('div');
+      overlay.className = 'video-thumb-overlay';
+
+      thumbWrap.appendChild(img);
+      thumbWrap.appendChild(overlay);
+
+      const viewsWrap = document.createElement('div');
+      viewsWrap.className = 'video-views-wrap';
+
+      const views = document.createElement('div');
+      views.className = 'video-views';
+      views.textContent = fmtViews(video.views || 0);
+
+      const views24h = document.createElement('div');
+      views24h.className = 'video-views-sub';
+      const v24 = video.views_24h || 0;
+      views24h.textContent = v24 > 0 ? '+' + fmtViews(v24) + ' / 24h' : '— / 24h';
+
+      viewsWrap.appendChild(views);
+      viewsWrap.appendChild(views24h);
+
+      const title = document.createElement('div');
+      title.className = 'video-title';
+      title.textContent = video.title || '';
+
+      const age = document.createElement('div');
+      age.className = 'video-age';
+      age.textContent = video.published_at ? relAge(video.published_at) : '';
+
+      card.appendChild(thumbWrap);
+      card.appendChild(viewsWrap);
+      card.appendChild(title);
+      card.appendChild(age);
+      grid.appendChild(card);
     });
-    thumbWrap.appendChild(img);
+  }
 
-    const views = document.createElement('div');
-    views.className = 'video-views';
-    views.textContent = fmtViews(video.views || 0);
+  /* ── Subscriber section ────────────────────────────── */
 
-    const title = document.createElement('div');
-    title.className = 'video-title';
-    title.textContent = video.title || '';
+  const subEl  = document.getElementById('subCount');
+  let displayedCount = state.subscribers.previous || state.subscribers.current;
 
-    const age = document.createElement('div');
-    age.className = 'video-age';
-    age.textContent = video.published_at ? relAge(video.published_at) : '';
+  subEl.textContent = fmtSubs(displayedCount);
+  countUp(subEl, displayedCount, state.subscribers.current, 800);
+  displayedCount = state.subscribers.current;
+  renderDelta(state.subscribers.current, state.subscribers.previous || state.subscribers.current);
 
-    card.appendChild(thumbWrap);
-    card.appendChild(views);
-    card.appendChild(title);
-    card.appendChild(age);
-    grid.appendChild(card);
-  });
+  /* ── Initial video render ──────────────────────────── */
+  renderVideos(state.videos);
 
-  /* ── Live time ─────────────────────────────────────────── */
+  /* ── Live time ─────────────────────────────────────── */
 
   const liveTimeEl = document.getElementById('liveTime');
-
   function updateTime() {
     liveTimeEl.textContent = new Date().toLocaleTimeString('ja-JP', {
       timeZone: 'Asia/Tokyo',
-      hour:     '2-digit',
-      minute:   '2-digit',
-      hour12:   false,
+      hour: '2-digit', minute: '2-digit', hour12: false,
     }) + ' JST';
   }
   updateTime();
   setInterval(updateTime, 1000);
 
-  /* ── Auto reload every 60 s ─────────────────────────────── */
-  setTimeout(function () { location.reload(); }, 60000);
+  /* ── Async polling — fetch data.json every 60 s ────── */
+
+  function fetchAndUpdate() {
+    fetch('./data.json?t=' + Date.now())
+      .then(function (r) { return r.json(); })
+      .then(function (newData) {
+        const newCount = newData.subscribers.current;
+
+        // Animate subscriber count if changed
+        if (newCount !== displayedCount) {
+          countUp(subEl, displayedCount, newCount, 1200);
+          renderDelta(newCount, displayedCount);
+          displayedCount = newCount;
+        }
+
+        // Re-render video grid if IDs or views changed
+        const oldSig = (state.videos || []).map(function (v) { return v.id + ':' + v.views; }).join('|');
+        const newSig = (newData.videos || []).map(function (v) { return v.id + ':' + v.views; }).join('|');
+        if (newSig !== oldSig) {
+          renderVideos(newData.videos);
+        }
+
+        state = newData;
+      })
+      .catch(function () { /* silent — keep showing last known data */ });
+  }
+
+  setInterval(fetchAndUpdate, 60000);
 })();

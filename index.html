@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <title>AKIRA.M — Dashboard</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+  <script src="data.js"></script>
+</head>
+<body>
+  <div class="grain" aria-hidden="true"></div>
+  <div class="letterbox letterbox--top" aria-hidden="true"></div>
+  <div class="letterbox letterbox--bottom" aria-hidden="true"></div>
+
+  <main class="layout">
+    <section class="col-left">
+      <div class="sub-inner">
+        <p class="sub-label">SUBSCRIBERS</p>
+        <p class="sub-count" id="subCount">—</p>
+        <p class="sub-delta" id="subDelta"></p>
+      </div>
+      <div class="red-line" aria-hidden="true"></div>
+    </section>
+
+    <section class="col-right">
+      <div class="video-grid" id="videoGrid"></div>
+    </section>
+  </main>
+
+  <footer class="live-bar">
+    <span class="live-dot" aria-hidden="true"></span>
+    <span class="live-label">LIVE</span>
+    <span class="live-time" id="liveTime"></span>
+  </footer>
+
+  <script src="app.js"></script>
+</body>
+</html>

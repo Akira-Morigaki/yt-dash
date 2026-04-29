@@ -1,0 +1,123 @@
+#!/usr/bin/env python3
+"""
+Update YouTube dashboard data files (data.js and data.json).
+Self-contained: fetches subscriber count + latest 3 long-form videos via Data API.
+Called from youtube-subscriber-tracker SKILL.md after Discord send.
+"""
+import json
+import os
+import re
+import subprocess
+import sys
+import tempfile
+import urllib.request
+from datetime import datetime, timezone, timedelta
+
+CHANNEL_ID   = "UCXDnQrp8Sao7ZmpL9Ws-SLA"
+BASE_DATA    = "https://www.googleapis.com/youtube/v3"
+GET_TOKEN_PY = "/Users/akira.ai/.claude/scheduled-tasks/youtube-oauth/get_token.py"
+DASH_DIR     = "/Users/akira.ai/.claude/scheduled-tasks/youtube-dashboard"
+DATA_JSON    = os.path.join(DASH_DIR, "data.json")
+DATA_JS      = os.path.join(DASH_DIR, "data.js")
+
+
+def get_token():
+    r = subprocess.run(["python3", GET_TOKEN_PY], capture_output=True, text=True, check=True)
+    return r.stdout.strip()
+
+
+def api_get(url, token):
+    req = urllib.request.Request(url, headers={"Authorization": f"Bearer {token}"})
+    with urllib.request.urlopen(req, timeout=15) as resp:
+        return json.loads(resp.read())
+
+
+def parse_duration(iso):
+    m = re.match(r"PT(?:(\d+)H)?(?:(\d+)M)?(?:(\d+)S)?", iso or "")
+    if not m:
+        return 0
+    return int(m.group(1) or 0) * 3600 + int(m.group(2) or 0) * 60 + int(m.group(3) or 0)
+
+
+def atomic_write(path, content):
+    dir_ = os.path.dirname(path)
+    with tempfile.NamedTemporaryFile("w", dir=dir_, delete=False, suffix=".tmp", encoding="utf-8") as f:
+        f.write(content)
+        tmp = f.name
+    os.replace(tmp, path)
+
+
+def main():
+    jst = timezone(timedelta(hours=9))
+    now = datetime.now(jst)
+    token = get_token()
+
+    # Subscriber count
+    ch = api_get(f"{BASE_DATA}/channels?part=statistics&id={CHANNEL_ID}", token)
+    sub_count = int(ch["items"][0]["statistics"]["subscriberCount"])
+
+    # Latest videos (fetch more to filter out Shorts)
+    search = api_get(
+        f"{BASE_DATA}/search?part=snippet&channelId={CHANNEL_ID}"
+        f"&type=video&order=date&maxResults=8",
+        token,
+    )
+    video_ids = [item["id"]["videoId"] for item in search.get("items", [])]
+
+    if video_ids:
+        vids = api_get(
+            f"{BASE_DATA}/videos?part=snippet,contentDetails,statistics&id={','.join(video_ids)}",
+            token,
+        )
+        items = vids.get("items", [])
+    else:
+        items = []
+
+    videos = []
+    for item in items:
+        if parse_duration(item["contentDetails"]["duration"]) < 60:
+            continue  # Skip Shorts
+        pub = datetime.fromisoformat(item["snippet"]["publishedAt"].replace("Z", "+00:00"))
+        vid_id = item["id"]
+        videos.append({
+            "id": vid_id,
+            "title": item["snippet"]["title"],
+            "views": int(item["statistics"].get("viewCount", 0)),
+            "published_at": pub.astimezone(jst).isoformat(),
+            "thumbnail": f"https://i.ytimg.com/vi/{vid_id}/maxresdefault.jpg",
+        })
+        if len(videos) >= 3:
+            break
+
+    # Read previous subscriber count for delta
+    prev_count = sub_count
+    if os.path.exists(DATA_JSON):
+        try:
+            with open(DATA_JSON, encoding="utf-8") as f:
+                old = json.load(f)
+            prev_count = old.get("subscribers", {}).get("current", sub_count)
+        except Exception:
+            pass
+
+    data = {
+        "subscribers": {
+            "current": sub_count,
+            "previous": prev_count,
+            "updated_at": now.isoformat(),
+        },
+        "videos": videos,
+    }
+
+    json_str = json.dumps(data, ensure_ascii=False, indent=2)
+    atomic_write(DATA_JSON, json_str + "\n")
+    atomic_write(DATA_JS, f"window.__YT_DATA__ = {json_str};\n")
+
+    print(f"Dashboard updated: {sub_count:,} subscribers, {len(videos)} videos", file=sys.stderr)
+
+
+if __name__ == "__main__":
+    try:
+        main()
+    except Exception as e:
+        print(f"Dashboard update error: {e}", file=sys.stderr)
+        sys.exit(1)

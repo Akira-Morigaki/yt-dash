@@ -1,0 +1,30 @@
+{
+  "subscribers": {
+    "current": 12345,
+    "previous": 12333,
+    "updated_at": "2026-04-29T12:00:00+09:00"
+  },
+  "videos": [
+    {
+      "id": "PLACEHOLDER_1",
+      "title": "Loading... (run update_dashboard.py to populate)",
+      "views": 24500,
+      "published_at": "2026-04-27T20:00:00+09:00",
+      "thumbnail": "https://i.ytimg.com/vi/PLACEHOLDER_1/maxresdefault.jpg"
+    },
+    {
+      "id": "PLACEHOLDER_2",
+      "title": "Loading...",
+      "views": 12300,
+      "published_at": "2026-04-24T20:00:00+09:00",
+      "thumbnail": "https://i.ytimg.com/vi/PLACEHOLDER_2/maxresdefault.jpg"
+    },
+    {
+      "id": "PLACEHOLDER_3",
+      "title": "Loading...",
+      "views": 8700,
+      "published_at": "2026-04-22T20:00:00+09:00",
+      "thumbnail": "https://i.ytimg.com/vi/PLACEHOLDER_3/maxresdefault.jpg"
+    }
+  ]
+}

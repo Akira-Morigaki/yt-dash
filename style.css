@@ -345,15 +345,46 @@ html, body {
 
 .live-version { color: var(--text-dim); }
 
-/* ─── Responsive: portrait / tablet (iPad等) ───────── */
-@media (orientation: portrait), (max-aspect-ratio: 4/3) {
+/* ─── iPad 横持ち (landscape, aspect ≤ 3:1) ────────── */
+@media (orientation: landscape) and (max-aspect-ratio: 3/1) {
+  /* レターボックスを隠してスペースを有効活用 */
+  .letterbox { display: none; }
+  .layout { padding-top: 0; padding-bottom: 0; }
+
+  /* 左カラム幅を広めに */
+  .col-left { width: 42vw; padding: 0 3.5vw; }
+
+  /* vw が小さいので文字を拡大 */
+  .channel-name  { font-size: 1.8vw; margin-bottom: 2vw; }
+  .sub-label     { font-size: 2vw; }
+  .sub-count     { font-size: 15vw; }
+  .sub-delta     { font-size: 1.6vw; margin-top: 1.8vw; }
+  .sparkline     { width: 24vw; height: 4.5vw; margin-top: 2.5vw; }
+  .updated-at    { font-size: 1.4vw; margin-top: 1.2vw; }
+
+  .video-grid       { gap: 2.5vw; }
+  .video-card       { gap: 1vw; padding-top: 1vw; }
+  .video-card::before { width: 5vw; }
+  .video-views      { font-size: 3.2vw; }
+  .video-views-wrap { gap: 1.2vw; }
+  .video-views-sub  { font-size: 1.1vw; }
+  .video-title      { font-size: 1.3vw; }
+  .video-age        { font-size: 1.1vw; }
+
+  .live-bar { font-size: 1.3vw; gap: 1vw; bottom: 1.5vh; right: 3vw; }
+  .live-dot { width: 1vw; height: 1vw; }
+  .live-sep { margin: 0 0.6vw; }
+}
+
+/* ─── iPad 縦持ち (portrait) ────────────────────────── */
+@media (orientation: portrait) {
+  .letterbox { display: none; }
+
   .layout {
     flex-direction: column;
     height: 100dvh;
     padding: 0 0 5vw;
   }
-
-  .letterbox { display: none; }
 
   .col-left {
     width: 100%;
@@ -387,12 +418,12 @@ html, body {
   .video-card       { gap: 1.5vw; padding-top: 1.5vw; }
   .video-card::before { width: 8vw; }
   .video-views      { font-size: 5vw; }
-  .video-views-sub  { font-size: 1.6vw; gap: 2vw; }
   .video-views-wrap { gap: 2vw; }
+  .video-views-sub  { font-size: 1.6vw; }
   .video-title      { font-size: 1.9vw; }
   .video-age        { font-size: 1.5vw; }
 
-  .live-bar  { font-size: 1.8vw; gap: 1.2vw; bottom: 1.5vw; right: 4vw; }
-  .live-dot  { width: 1.2vw; height: 1.2vw; }
-  .live-sep  { margin: 0 0.8vw; }
+  .live-bar { font-size: 1.8vw; gap: 1.2vw; bottom: 1.5vw; right: 4vw; }
+  .live-dot { width: 1.2vw; height: 1.2vw; }
+  .live-sep { margin: 0 0.8vw; }
 }

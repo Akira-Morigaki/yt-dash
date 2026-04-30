@@ -245,7 +245,7 @@
     }
     const startedAt = Date.now();
     function stopGlow() {
-      const wait = Math.max(0, 1200 - (Date.now() - startedAt));
+      const wait = Math.max(0, 2600 - (Date.now() - startedAt));
       setTimeout(function () {
         if (updatedAtEl) updatedAtEl.classList.remove('updated-at--polling');
         if (redLineEl)   redLineEl.classList.remove('red-line--pulse');

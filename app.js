@@ -125,9 +125,10 @@
 
   /* ── Sparkline ─────────────────────────────────────── */
 
-  const sparkLineEl = document.getElementById('sparkLine');
-  const sparkFillEl = document.getElementById('sparkFill');
-  const updatedAtEl = document.getElementById('updatedAt');
+  const sparkLineEl   = document.getElementById('sparkLine');
+  const sparkFillEl   = document.getElementById('sparkFill');
+  const updatedAtEl   = document.getElementById('updatedAt');
+  const liveVersionEl = document.getElementById('liveVersion');
 
   function renderSparkline(history) {
     if (!history || history.length < 2) return;
@@ -150,11 +151,13 @@
   }
 
   function renderUpdatedAt(isoStr) {
-    if (!isoStr || !updatedAtEl) return;
+    if (!isoStr) return;
     const d = new Date(isoStr);
-    updatedAtEl.textContent = 'UPDATED ' + d.toLocaleTimeString('ja-JP', {
+    const hhmm = d.toLocaleTimeString('ja-JP', {
       timeZone: 'Asia/Tokyo', hour: '2-digit', minute: '2-digit', hour12: false,
     });
+    if (updatedAtEl)   updatedAtEl.textContent   = 'UPDATED ' + hhmm;
+    if (liveVersionEl) liveVersionEl.textContent = 'data ' + hhmm;
   }
 
   /* ── Subscriber section ────────────────────────────── */

@@ -158,9 +158,10 @@
     );
   }
 
-  function renderUpdatedAt(d) {
-    if (!d || !updatedAtEl) return;
-    updatedAtEl.textContent = 'UPDATED ' + d.toLocaleTimeString('ja-JP', {
+  function renderUpdatedAt(value) {
+    if (!value || !updatedAtEl) return;
+    const date = value instanceof Date ? value : new Date(value);
+    updatedAtEl.textContent = 'UPDATED ' + date.toLocaleTimeString('ja-JP', {
       timeZone: 'Asia/Tokyo', hour: '2-digit', minute: '2-digit', hour12: false,
     });
   }
@@ -175,7 +176,7 @@
   displayedCount = state.subscribers.current;
   renderDelta(state.subscribers.current, state.subscribers.previous || state.subscribers.current);
   renderSparkline(state.history);
-  renderUpdatedAt(new Date());
+  renderUpdatedAt(state.subscribers.updated_at);
 
   /* ── Initial video render ──────────────────────────── */
   renderVideos(state.videos);
@@ -275,7 +276,7 @@
         }
 
         renderSparkline(newData.history);
-        renderUpdatedAt(new Date());
+        renderUpdatedAt(newUpdatedAt);
 
         // Kirari flash when upstream data refreshed (updated_at changed)
         if (oldUpdatedAt && newUpdatedAt && oldUpdatedAt !== newUpdatedAt) {

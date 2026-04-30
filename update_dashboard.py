@@ -174,15 +174,36 @@ def get_videos(now, jst, token):
     return videos
 
 
+HISTORY_MAX_DAYS = 180
+
+
 def update_history(now, sub_count, old_data):
-    """Down-sample sub history to one point per JST date, keep last 30."""
-    today_str = now.date().isoformat()
-    history = (old_data or {}).get("history", [])
-    if history and history[-1].get("t", "").startswith(today_str):
+    """One JST-day point in history. Missing days are filled with the previous
+    value (= 0 growth). Keeps the last HISTORY_MAX_DAYS entries."""
+    history = list((old_data or {}).get("history", []))
+    today = now.date()
+    jst   = now.tzinfo
+
+    if not history:
+        return [{"t": now.isoformat(), "n": sub_count}]
+
+    last_dt = datetime.fromisoformat(history[-1]["t"])
+    last_d  = last_dt.date()
+    last_n  = history[-1]["n"]
+
+    if last_d == today:
         history[-1] = {"t": now.isoformat(), "n": sub_count}
     else:
+        d = last_d + timedelta(days=1)
+        while d < today:
+            history.append({
+                "t": datetime(d.year, d.month, d.day, 23, 59, 59, tzinfo=jst).isoformat(),
+                "n": last_n,
+            })
+            d += timedelta(days=1)
         history.append({"t": now.isoformat(), "n": sub_count})
-    return history[-30:]
+
+    return history[-HISTORY_MAX_DAYS:]
 
 
 def main():

@@ -129,6 +129,14 @@
   const sparkFillEl   = document.getElementById('sparkFill');
   const updatedAtEl   = document.getElementById('updatedAt');
   const liveVersionEl = document.getElementById('liveVersion');
+  const flashEl       = document.getElementById('flashOverlay');
+
+  function flashScreen() {
+    if (!flashEl) return;
+    flashEl.classList.remove('flash--active');
+    void flashEl.offsetWidth;
+    flashEl.classList.add('flash--active');
+  }
 
   function renderSparkline(history) {
     if (!history || history.length < 2) return;
@@ -232,6 +240,8 @@
       .then(function (r) { return r.json(); })
       .then(function (newData) {
         const newCount = newData.subscribers.current;
+        const oldUpdatedAt = state.subscribers && state.subscribers.updated_at;
+        const newUpdatedAt = newData.subscribers && newData.subscribers.updated_at;
 
         // Animate subscriber count if changed
         if (newCount !== displayedCount) {
@@ -249,7 +259,12 @@
         }
 
         renderSparkline(newData.history);
-        renderUpdatedAt(newData.subscribers.updated_at);
+        renderUpdatedAt(newUpdatedAt);
+
+        // Kirari flash when upstream data refreshed (updated_at changed)
+        if (oldUpdatedAt && newUpdatedAt && oldUpdatedAt !== newUpdatedAt) {
+          flashScreen();
+        }
         state = newData;
       })
       .catch(function () { /* silent — keep showing last known data */ });
@@ -268,4 +283,5 @@
     renderDelta(to, from);
     displayedCount = to;
   };
+  window.__flash = flashScreen;
 })();

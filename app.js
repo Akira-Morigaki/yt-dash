@@ -129,6 +129,7 @@
   const sparkFillEl   = document.getElementById('sparkFill');
   const updatedAtEl   = document.getElementById('updatedAt');
   const flashEl       = document.getElementById('flashOverlay');
+  const redLineEl     = document.querySelector('.red-line');
 
   function flashScreen() {
     if (!flashEl) return;
@@ -237,11 +238,17 @@
       void updatedAtEl.offsetWidth;
       updatedAtEl.classList.add('updated-at--polling');
     }
+    if (redLineEl) {
+      redLineEl.classList.remove('red-line--pulse');
+      void redLineEl.offsetWidth;
+      redLineEl.classList.add('red-line--pulse');
+    }
     const startedAt = Date.now();
     function stopGlow() {
       const wait = Math.max(0, 1200 - (Date.now() - startedAt));
       setTimeout(function () {
         if (updatedAtEl) updatedAtEl.classList.remove('updated-at--polling');
+        if (redLineEl)   redLineEl.classList.remove('red-line--pulse');
       }, wait);
     }
 

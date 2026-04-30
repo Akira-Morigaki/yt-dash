@@ -266,6 +266,49 @@ html, body {
   height: 1px;
   background: linear-gradient(90deg, var(--red) 0%, transparent 100%);
 }
+.red-line::after {
+  content: '';
+  position: absolute;
+  inset: -4px 0;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(255, 0, 0, 0.95) 35%,
+    rgba(255, 230, 230, 1) 50%,
+    rgba(255, 0, 0, 0.95) 65%,
+    transparent 100%
+  );
+  filter: blur(4px);
+  box-shadow:
+    0 0 1.4vw rgba(255, 0, 0, 0.85),
+    0 0 3vw rgba(255, 0, 0, 0.35);
+  opacity: 0;
+  transform: scaleX(0);
+  transform-origin: center;
+  pointer-events: none;
+  will-change: transform, opacity;
+}
+.red-line.red-line--pulse::after {
+  animation: red-line-pulse 1.2s ease-out;
+}
+@keyframes red-line-pulse {
+  0% {
+    opacity: 0;
+    transform: scaleX(0);
+  }
+  20% {
+    opacity: 1;
+    transform: scaleX(1);
+  }
+  60% {
+    opacity: 0.9;
+    transform: scaleX(1);
+  }
+  100% {
+    opacity: 0;
+    transform: scaleX(1);
+  }
+}
 
 /* ─── Right column — video grid ────────────────────── */
 .col-right {

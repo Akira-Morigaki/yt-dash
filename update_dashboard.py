@@ -174,7 +174,7 @@ def get_videos(now, jst, token):
     return videos
 
 
-HISTORY_MAX_DAYS = 180
+HISTORY_MAX_DAYS = 365
 
 
 def update_history(now, sub_count, old_data):

@@ -17,7 +17,7 @@ HISTORY_JSON   = "/Users/akira.ai/.claude/scheduled-tasks/youtube-subscriber-tra
 DASH_DIR       = "/Users/akira.ai/.claude/scheduled-tasks/youtube-dashboard"
 DATA_JSON      = os.path.join(DASH_DIR, "data.json")
 DATA_JS        = os.path.join(DASH_DIR, "data.js")
-DAYS           = 180
+DAYS           = 365
 
 
 def get_token():

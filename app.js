@@ -129,7 +129,6 @@
   const sparkFillEl   = document.getElementById('sparkFill');
   const updatedAtEl   = document.getElementById('updatedAt');
   const flashEl       = document.getElementById('flashOverlay');
-  const spinnerEl     = document.querySelector('.live-spinner');
 
   function flashScreen() {
     if (!flashEl) return;
@@ -233,12 +232,12 @@
   /* ── Async polling — fetch data.json every 60 s ────── */
 
   function fetchAndUpdate() {
-    if (spinnerEl) spinnerEl.classList.add('live-spinner--active');
+    if (updatedAtEl) updatedAtEl.classList.add('updated-at--polling');
     const startedAt = Date.now();
-    function stopSpinner() {
+    function stopGlow() {
       const wait = Math.max(0, 700 - (Date.now() - startedAt));
       setTimeout(function () {
-        if (spinnerEl) spinnerEl.classList.remove('live-spinner--active');
+        if (updatedAtEl) updatedAtEl.classList.remove('updated-at--polling');
       }, wait);
     }
 
@@ -274,7 +273,7 @@
         state = newData;
       })
       .catch(function () { /* silent — keep showing last known data */ })
-      .then(stopSpinner, stopSpinner);
+      .then(stopGlow, stopGlow);
   }
 
   setInterval(fetchAndUpdate, 60000);

@@ -232,10 +232,14 @@
   /* ── Async polling — fetch data.json every 60 s ────── */
 
   function fetchAndUpdate() {
-    if (updatedAtEl) updatedAtEl.classList.add('updated-at--polling');
+    if (updatedAtEl) {
+      updatedAtEl.classList.remove('updated-at--polling');
+      void updatedAtEl.offsetWidth;
+      updatedAtEl.classList.add('updated-at--polling');
+    }
     const startedAt = Date.now();
     function stopGlow() {
-      const wait = Math.max(0, 700 - (Date.now() - startedAt));
+      const wait = Math.max(0, 1200 - (Date.now() - startedAt));
       setTimeout(function () {
         if (updatedAtEl) updatedAtEl.classList.remove('updated-at--polling');
       }, wait);

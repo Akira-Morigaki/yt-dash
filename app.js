@@ -128,8 +128,8 @@
   const sparkLineEl   = document.getElementById('sparkLine');
   const sparkFillEl   = document.getElementById('sparkFill');
   const updatedAtEl   = document.getElementById('updatedAt');
-  const liveVersionEl = document.getElementById('liveVersion');
   const flashEl       = document.getElementById('flashOverlay');
+  const spinnerEl     = document.querySelector('.live-spinner');
 
   function flashScreen() {
     if (!flashEl) return;
@@ -159,13 +159,11 @@
   }
 
   function renderUpdatedAt(isoStr) {
-    if (!isoStr) return;
+    if (!isoStr || !updatedAtEl) return;
     const d = new Date(isoStr);
-    const hhmm = d.toLocaleTimeString('ja-JP', {
+    updatedAtEl.textContent = 'UPDATED ' + d.toLocaleTimeString('ja-JP', {
       timeZone: 'Asia/Tokyo', hour: '2-digit', minute: '2-digit', hour12: false,
     });
-    if (updatedAtEl)   updatedAtEl.textContent   = 'UPDATED ' + hhmm;
-    if (liveVersionEl) liveVersionEl.textContent = 'data ' + hhmm;
   }
 
   /* ── Subscriber section ────────────────────────────── */
@@ -236,6 +234,15 @@
   /* ── Async polling — fetch data.json every 60 s ────── */
 
   function fetchAndUpdate() {
+    if (spinnerEl) spinnerEl.classList.add('live-spinner--active');
+    const startedAt = Date.now();
+    function stopSpinner() {
+      const wait = Math.max(0, 700 - (Date.now() - startedAt));
+      setTimeout(function () {
+        if (spinnerEl) spinnerEl.classList.remove('live-spinner--active');
+      }, wait);
+    }
+
     fetch('./data.json?t=' + Date.now())
       .then(function (r) { return r.json(); })
       .then(function (newData) {
@@ -267,7 +274,8 @@
         }
         state = newData;
       })
-      .catch(function () { /* silent — keep showing last known data */ });
+      .catch(function () { /* silent — keep showing last known data */ })
+      .then(stopSpinner, stopSpinner);
   }
 
   setInterval(fetchAndUpdate, 60000);

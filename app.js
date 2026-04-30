@@ -276,7 +276,7 @@
         }
 
         renderSparkline(newData.history);
-        renderUpdatedAt(newUpdatedAt);
+        renderUpdatedAt(new Date());
 
         // Kirari flash when upstream data refreshed (updated_at changed)
         if (oldUpdatedAt && newUpdatedAt && oldUpdatedAt !== newUpdatedAt) {

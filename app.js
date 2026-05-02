@@ -290,6 +290,7 @@
   }
 
   setInterval(fetchAndUpdate, 60000);
+  fetchAndUpdate();
 
   /* ── Test helper (call window.__sim(+10) in console) ── */
   window.__sim = function (delta) {

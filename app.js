@@ -308,14 +308,14 @@
 
   function scanEffect() {
     const el = document.createElement('div');
-    el.style.cssText = `
-      position: fixed; top: 0; left: -100%; width: 60%; height: 200%;
-      background: linear-gradient(105deg, transparent 40%, rgba(255,255,255,0.03) 45%, rgba(255,255,255,0.06) 50%, rgba(255,255,255,0.03) 55%, transparent 60%);
-      pointer-events: none; z-index: 9999;
-      animation: scanAnim 1.2s ease-in-out forwards;
-    `;
+    el.style.cssText = 'position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:9999;overflow:hidden;';
+    const inner = document.createElement('div');
+    inner.style.cssText = 'position:absolute;top:-50%;left:-100%;width:60%;height:200%;background:linear-gradient(105deg,transparent 40%,rgba(255,255,255,0.04) 45%,rgba(255,255,255,0.07) 50%,rgba(255,255,255,0.04) 55%,transparent 60%);animation:scanAnim 1.2s ease-in-out forwards;';
+    el.appendChild(inner);
     document.body.appendChild(el);
-    el.addEventListener('animationend', () => el.remove());
+    const cleanup = () => { if (el.parentNode) el.remove(); };
+    inner.addEventListener('animationend', cleanup);
+    setTimeout(cleanup, 1500);
   }
 
   /* ── Re-poll on tab focus ──────────────────────────── */

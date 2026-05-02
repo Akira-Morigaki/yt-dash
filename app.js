@@ -257,6 +257,7 @@
       .then(function (r) { return r.json(); })
       .then(function (newData) {
         const newCount = newData.subscribers.current;
+        scanEffect();
         const oldUpdatedAt = state.subscribers && state.subscribers.updated_at;
         const newUpdatedAt = newData.subscribers && newData.subscribers.updated_at;
 
@@ -302,4 +303,27 @@
     displayedCount = to;
   };
   window.__flash = flashScreen;
+
+  /* ── Scan effect on data fetch ─────────────────────── */
+
+  function scanEffect() {
+    const el = document.createElement('div');
+    el.style.cssText = `
+      position: fixed; top: 0; left: -100%; width: 60%; height: 200%;
+      background: linear-gradient(105deg, transparent 40%, rgba(255,255,255,0.03) 45%, rgba(255,255,255,0.06) 50%, rgba(255,255,255,0.03) 55%, transparent 60%);
+      pointer-events: none; z-index: 9999;
+      animation: scanAnim 1.2s ease-in-out forwards;
+    `;
+    document.body.appendChild(el);
+    el.addEventListener('animationend', () => el.remove());
+  }
+
+  /* ── Re-poll on tab focus ──────────────────────────── */
+
+  document.addEventListener('visibilitychange', () => {
+    if (document.visibilityState === 'visible') {
+      fetchAndUpdate();
+    }
+  });
+
 })();

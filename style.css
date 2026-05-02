@@ -583,3 +583,8 @@ html, body {
   .live-dot { width: 1.2vw; height: 1.2vw; }
   .live-sep { margin: 0 0.8vw; }
 }
+
+@keyframes scanAnim {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(250%); }
+}

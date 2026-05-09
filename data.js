@@ -2,7 +2,7 @@ window.__YT_DATA__ = {
   "subscribers": {
     "current": 1666,
     "previous": 1666,
-    "updated_at": "2026-05-10T04:08:37.954854+09:00",
+    "updated_at": "2026-05-10T04:38:28.707720+09:00",
     "base_at": "2026-05-10T00:05:53.147+09:00"
   },
   "history": [
@@ -1463,7 +1463,7 @@ window.__YT_DATA__ = {
       "n": 1666
     },
     {
-      "t": "2026-05-10T04:08:37.954854+09:00",
+      "t": "2026-05-10T04:38:28.707720+09:00",
       "n": 1666
     }
   ],
@@ -1487,8 +1487,8 @@ window.__YT_DATA__ = {
     {
       "id": "SDgTJsGKsrQ",
       "title": "Nikon ZR with Hasselblad - Japan Autumn - Golden Waves: Hakone Sengokuhara Susuki (4K)",
-      "views": 1101,
-      "views_24h": 4,
+      "views": 1102,
+      "views_24h": 5,
       "published_at": "2025-12-12T19:00:47+09:00",
       "thumbnail": "https://i.ytimg.com/vi/SDgTJsGKsrQ/maxresdefault.jpg"
     }

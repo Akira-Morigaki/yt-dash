@@ -2,7 +2,7 @@
   "subscribers": {
     "current": 1667,
     "previous": 1667,
-    "updated_at": "2026-05-10T22:08:29.951015+09:00",
+    "updated_at": "2026-05-10T22:38:30.664375+09:00",
     "base_at": "2026-05-10T18:05:48.966+09:00"
   },
   "history": [
@@ -1463,7 +1463,7 @@
       "n": 1666
     },
     {
-      "t": "2026-05-10T22:08:29.951015+09:00",
+      "t": "2026-05-10T22:38:30.664375+09:00",
       "n": 1667
     }
   ],
@@ -1472,7 +1472,7 @@
       "id": "1N_kPwqIT_k",
       "title": "Nikon ZR | Kamakura Sakura in Japan (4K)",
       "views": 559,
-      "views_24h": 5,
+      "views_24h": 3,
       "published_at": "2026-03-16T21:00:10+09:00",
       "thumbnail": "https://i.ytimg.com/vi/1N_kPwqIT_k/maxresdefault.jpg"
     },
@@ -1488,7 +1488,7 @@
       "id": "SDgTJsGKsrQ",
       "title": "Nikon ZR with Hasselblad - Japan Autumn - Golden Waves: Hakone Sengokuhara Susuki (4K)",
       "views": 1102,
-      "views_24h": 2,
+      "views_24h": 1,
       "published_at": "2025-12-12T19:00:47+09:00",
       "thumbnail": "https://i.ytimg.com/vi/SDgTJsGKsrQ/maxresdefault.jpg"
     }

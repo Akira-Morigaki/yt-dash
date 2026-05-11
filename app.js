@@ -201,6 +201,13 @@
     if (audioCtx) return;
     try {
       audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+      // Safari requires playing a silent buffer immediately after creation
+      // to fully activate the AudioContext
+      var buf = audioCtx.createBuffer(1, 1, 22050);
+      var src = audioCtx.createBufferSource();
+      src.buffer = buf;
+      src.connect(audioCtx.destination);
+      src.start(0);
     } catch (e) {}
   }
 

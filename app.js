@@ -212,22 +212,28 @@
   function playChime() {
     if (!audioCtx) return;
     try {
-      if (audioCtx.state === 'suspended') audioCtx.resume();
-      const notes = [880, 1108, 1320];
-      notes.forEach(function (freq, i) {
-        const osc = audioCtx.createOscillator();
-        const gain = audioCtx.createGain();
-        osc.connect(gain);
-        gain.connect(audioCtx.destination);
-        osc.type = 'sine';
-        osc.frequency.value = freq;
-        const t = audioCtx.currentTime + i * 0.2;
-        gain.gain.setValueAtTime(0, t);
-        gain.gain.linearRampToValueAtTime(0.22, t + 0.02);
-        gain.gain.exponentialRampToValueAtTime(0.001, t + 0.9);
-        osc.start(t);
-        osc.stop(t + 0.9);
-      });
+      function scheduleNotes() {
+        var notes = [880, 1108, 1320];
+        notes.forEach(function (freq, i) {
+          var osc  = audioCtx.createOscillator();
+          var gain = audioCtx.createGain();
+          osc.connect(gain);
+          gain.connect(audioCtx.destination);
+          osc.type = 'sine';
+          osc.frequency.value = freq;
+          var t = audioCtx.currentTime + i * 0.2;
+          gain.gain.setValueAtTime(0, t);
+          gain.gain.linearRampToValueAtTime(0.22, t + 0.02);
+          gain.gain.exponentialRampToValueAtTime(0.001, t + 0.9);
+          osc.start(t);
+          osc.stop(t + 0.9);
+        });
+      }
+      if (audioCtx.state === 'suspended') {
+        audioCtx.resume().then(scheduleNotes);
+      } else {
+        scheduleNotes();
+      }
     } catch (e) {}
   }
 

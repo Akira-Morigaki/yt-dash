@@ -2,7 +2,7 @@ window.__YT_DATA__ = {
   "subscribers": {
     "current": 1669,
     "previous": 1669,
-    "updated_at": "2026-05-15T13:38:24.718849+09:00",
+    "updated_at": "2026-05-15T14:08:32.056972+09:00",
     "base_at": "2026-05-15T12:05:47.864+09:00"
   },
   "history": [
@@ -1463,7 +1463,7 @@ window.__YT_DATA__ = {
       "n": 1669
     },
     {
-      "t": "2026-05-15T13:38:24.718849+09:00",
+      "t": "2026-05-15T14:08:32.056972+09:00",
       "n": 1669
     }
   ],
@@ -1480,7 +1480,7 @@ window.__YT_DATA__ = {
       "id": "KCfcRhp_xsM",
       "title": "Nikon ZR | Cinematic Kyoto",
       "views": 3708,
-      "views_24h": 8,
+      "views_24h": 6,
       "published_at": "2026-02-11T19:00:26+09:00",
       "thumbnail": "https://i.ytimg.com/vi/KCfcRhp_xsM/maxresdefault.jpg"
     },

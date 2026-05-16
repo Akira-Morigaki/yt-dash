@@ -2,7 +2,7 @@ window.__YT_DATA__ = {
   "subscribers": {
     "current": 1669,
     "previous": 1669,
-    "updated_at": "2026-05-16T22:38:35.376761+09:00",
+    "updated_at": "2026-05-16T23:08:36.651693+09:00",
     "base_at": "2026-05-16T18:05:43.184+09:00"
   },
   "history": [
@@ -1463,7 +1463,7 @@ window.__YT_DATA__ = {
       "n": 1669
     },
     {
-      "t": "2026-05-16T22:38:35.376761+09:00",
+      "t": "2026-05-16T23:08:36.651693+09:00",
       "n": 1669
     }
   ],
@@ -1471,7 +1471,7 @@ window.__YT_DATA__ = {
     {
       "id": "1N_kPwqIT_k",
       "title": "Nikon ZR | Kamakura Sakura in Japan (4K)",
-      "views": 579,
+      "views": 580,
       "views_24h": 6,
       "published_at": "2026-03-16T21:00:10+09:00",
       "thumbnail": "https://i.ytimg.com/vi/1N_kPwqIT_k/maxresdefault.jpg"
@@ -1479,8 +1479,8 @@ window.__YT_DATA__ = {
     {
       "id": "KCfcRhp_xsM",
       "title": "Nikon ZR | Cinematic Kyoto",
-      "views": 3718,
-      "views_24h": 8,
+      "views": 3719,
+      "views_24h": 9,
       "published_at": "2026-02-11T19:00:26+09:00",
       "thumbnail": "https://i.ytimg.com/vi/KCfcRhp_xsM/maxresdefault.jpg"
     },

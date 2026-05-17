@@ -2,7 +2,7 @@ window.__YT_DATA__ = {
   "subscribers": {
     "current": 1669,
     "previous": 1669,
-    "updated_at": "2026-05-17T10:38:25.181119+09:00",
+    "updated_at": "2026-05-17T11:08:26.020508+09:00",
     "base_at": "2026-05-17T06:05:42.777+09:00"
   },
   "history": [
@@ -1463,7 +1463,7 @@ window.__YT_DATA__ = {
       "n": 1669
     },
     {
-      "t": "2026-05-17T10:38:25.181119+09:00",
+      "t": "2026-05-17T11:08:26.020508+09:00",
       "n": 1669
     }
   ],
@@ -1472,7 +1472,7 @@ window.__YT_DATA__ = {
       "id": "1N_kPwqIT_k",
       "title": "Nikon ZR | Kamakura Sakura in Japan (4K)",
       "views": 581,
-      "views_24h": 7,
+      "views_24h": 6,
       "published_at": "2026-03-16T21:00:10+09:00",
       "thumbnail": "https://i.ytimg.com/vi/1N_kPwqIT_k/maxresdefault.jpg"
     },
@@ -1488,7 +1488,7 @@ window.__YT_DATA__ = {
       "id": "SDgTJsGKsrQ",
       "title": "Nikon ZR with Hasselblad - Japan Autumn - Golden Waves: Hakone Sengokuhara Susuki (4K)",
       "views": 1117,
-      "views_24h": 4,
+      "views_24h": 3,
       "published_at": "2025-12-12T19:00:47+09:00",
       "thumbnail": "https://i.ytimg.com/vi/SDgTJsGKsrQ/maxresdefault.jpg"
     }

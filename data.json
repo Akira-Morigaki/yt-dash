@@ -2,7 +2,7 @@
   "subscribers": {
     "current": 1670,
     "previous": 1670,
-    "updated_at": "2026-05-18T18:38:35.364393+09:00",
+    "updated_at": "2026-05-18T19:08:32.901344+09:00",
     "base_at": "2026-05-18T18:05:50.717+09:00"
   },
   "history": [
@@ -1463,7 +1463,7 @@
       "n": 1670
     },
     {
-      "t": "2026-05-18T18:38:35.364393+09:00",
+      "t": "2026-05-18T19:08:32.901344+09:00",
       "n": 1670
     }
   ],
@@ -1479,7 +1479,7 @@
     {
       "id": "KCfcRhp_xsM",
       "title": "Nikon ZR | Cinematic Kyoto",
-      "views": 3724,
+      "views": 3725,
       "views_24h": null,
       "published_at": "2026-02-11T19:00:26+09:00",
       "thumbnail": "https://i.ytimg.com/vi/KCfcRhp_xsM/maxresdefault.jpg"

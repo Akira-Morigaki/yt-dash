@@ -1,9 +1,9 @@
 window.__YT_DATA__ = {
   "subscribers": {
-    "current": 1672,
-    "previous": 1672,
-    "updated_at": "2026-05-20T12:02:40.860178+09:00",
-    "base_at": "2026-05-20T06:06:07.700+09:00"
+    "current": 1673,
+    "previous": 1673,
+    "updated_at": "2026-05-20T12:38:47.026889+09:00",
+    "base_at": "2026-05-20T12:06:04.389+09:00"
   },
   "history": [
     {
@@ -1463,16 +1463,16 @@ window.__YT_DATA__ = {
       "n": 1671
     },
     {
-      "t": "2026-05-20T12:02:40.860178+09:00",
-      "n": 1672
+      "t": "2026-05-20T12:38:47.026889+09:00",
+      "n": 1673
     }
   ],
   "videos": [
     {
       "id": "1N_kPwqIT_k",
       "title": "Nikon ZR | Kamakura Sakura in Japan (4K)",
-      "views": 593,
-      "views_24h": 9,
+      "views": 594,
+      "views_24h": 10,
       "published_at": "2026-03-16T21:00:10+09:00",
       "thumbnail": "https://i.ytimg.com/vi/1N_kPwqIT_k/maxresdefault.jpg"
     },
